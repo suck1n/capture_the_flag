@@ -30,10 +30,10 @@ export async function loginAsUser(user: string, password: string): Promise<User>
         db.prepare("SELECT * from users where name = ?")
             .get([user], (err: Error | null, row) => {
                 if (err) { reject(err); return; }
+                if (row === undefined) { resolve(undefined); return; }
 
                 const hashedPassword = SHA256(password + row["salt"]).toString(HEX);
-                const user = row !== undefined && row["password"] === hashedPassword ?
-                    {id: row["id"], name: row["name"]} : undefined;
+                const user = row["password"] === hashedPassword ? {id: row["id"], name: row["name"]} : undefined;
                 resolve(user);
             });
     });
