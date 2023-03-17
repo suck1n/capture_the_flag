@@ -1,13 +1,23 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "latest",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  }
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start"
+	},
+	"dependencies": {
+		"@types/crypto-js": "^4.1.1",
+		"@types/node": "^18.15.0",
+		"@types/react": "^18.0.28",
+		"@types/sqlite3": "^3.1.8",
+		"crypto-js": "^4.1.1",
+		"iron-session": "^6.3.1",
+		"next": "latest",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"sqlite3": "^5.1.6"
+	},
+	"devDependencies": {
+		"typescript": "4.9.5"
+	}
 }
