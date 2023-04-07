@@ -24,18 +24,18 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 	const { username, password } = req.body as LoginForm;
 
 	if (username === undefined || password === undefined) {
-		res.status(200).send({"success": false, "error": "User and/or Password can not be empty"});
+		res.status(200).send({ success: false, error: "User and/or Password can not be empty"});
 		return;
 	}
 
 	const user = await loginAsUser(username, password);
 	if (!user) {
-		res.status(200).send({"success": false, "error": "User and/or Password was incorrect"})
+		res.status(200).send({ success: false, error: "User and/or Password was incorrect"})
 		return;
 	}
 
 	req.session["user"] = user;
 	await req.session.save();
 
-	res.status(200).send({"success": true});
+	res.status(200).send({ success: true });
 }
