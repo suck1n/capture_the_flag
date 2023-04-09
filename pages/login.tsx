@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {NextRouter, withRouter} from "next/router";
 import {LoginPostResponse} from "./api/login";
+import styles from "../components/Login.module.css";
+import Link from "next/link";
 
 type LoginState = {
     username: string
@@ -51,22 +53,21 @@ class Login extends Component<LoginProps, LoginState> {
 
     render() {
         return (
-            <div>
-                <h1>Login</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Username:
+            <div className={styles.container}>
+                <h1 className={styles.center}>Login</h1>
+                <form onSubmit={this.handleSubmit} className={styles.form}>
+                    <div>
+                        <label>Username:</label>
                         <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
-                    </label>
-                    <br />
-                    <label>
-                        Password:
+                    </div>
+                    <div>
+                        <label>Password:</label>
                         <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
-                    </label>
-                    <br />
+                    </div>
                     <button type="submit">Login</button>
-                    {this.state.error && <p>{this.state.error}</p>}
                 </form>
+                <p className={styles.p}>Not yet registered? Create account <Link href={"/register"}>here</Link></p>
+                {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
             </div>
         );
     }

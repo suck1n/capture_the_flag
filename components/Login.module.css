@@ -1,0 +1,60 @@
+.container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center {
+    text-align: center;
+    font-size: 40px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    font-size: 18px;
+}
+
+.p {
+    font-size: 12px;
+    text-align: end;
+}
+
+.form label {
+    line-height: 40px;
+}
+
+.form > div {
+    display: flex;
+    width: 400px;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form input {
+    width: 240px;
+}
+
+.form input, .form > button {
+    padding: 8px;
+    border: 1px solid #b3b3b3;
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.form > button {
+    font-size: 18px;
+    border: none;
+    background-color: rgb(48, 112, 179);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: Cantarell, sans-serif;
+    align-self: end;
+    width: 100px;
+}
