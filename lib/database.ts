@@ -6,13 +6,20 @@ const db = new Database('test.db');
 
 export type User = {
     id: number,
-    name: string
+    name: string,
+    tasks?: Task[]
 }
 
 export type Task = {
     id: number,
     name: string,
-    solved: boolean
+    position?: number,
+    solved?: boolean
+}
+
+export type UserTask = {
+    tasks: Task[],
+    users: User[]
 }
 
 export async function userExists(user: string): Promise<boolean> {
@@ -41,21 +48,43 @@ export async function loginAsUser(user: string, password: string): Promise<User>
     });
 }
 
-export async function getAllTasks(): Promise<Task[]> {
-    return new Promise<Task[]>((resolve, reject) => {
-        db.all("SELECT id, name from tasks", (err : Error | null, rows) => {
-            if (err) { reject(err); return; }
-            resolve(rows.map(r => ({id: r["id"], name: r["name"], solved: false})));
-        });
-    });
-}
 
-export async function getTasksForUser(user: string): Promise<Task[]> {
+
+export async function getTasksForUser(user: number): Promise<Task[]> {
     return new Promise<Task[]>((resolve, reject) => {
-        db.prepare("SELECT TaskID as 'id', Taskname as 'name', Solved from user_solved where username = ?")
+        db.prepare("SELECT taskId as id, taskname as name, position, solved from user_tasks where UserID = ?")
             .all([user], (err: Error | null, rows: Task[]) => {
                 if (err) { reject(err); return; }
                 resolve(rows);
             });
     });
+}
+
+export async function getTasks(): Promise<Task[]> {
+    return new Promise<Task[]>((resolve, reject) => {
+        db.all("SELECT id, name from tasks", (err : Error | null, rows: Task[]) => {
+            if (err) { reject(err); return; }
+            resolve(rows);
+        });
+    });
+}
+
+
+export async function getUsers(): Promise<User[]> {
+    return new Promise<User[]>((resolve, reject) => {
+        db.all("SELECT id, name from users", async (err : Error | null, rows: User[]) => {
+            if (err) { reject(err); return; }
+
+            for (let u of rows) {
+                u.tasks = await getTasksForUser(u.id);
+            }
+
+            resolve(rows);
+        });
+    });
+}
+
+
+export async function getTasksAndUsers(): Promise<UserTask> {
+    return ({tasks: await getTasks(), users: await getUsers()} as UserTask);
 }

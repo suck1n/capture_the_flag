@@ -1,52 +1,53 @@
-import React from "react";
+import React, {Component} from "react";
 import {NextRouter, withRouter} from "next/router";
+import {LoginPostResponse} from "./api/login";
 
-interface LoginForm {
-    username: string;
-    password: string;
+type LoginState = {
+    username: string
+    password: string
+    error: string
 }
 
-interface LoginResponse {
-    success: boolean;
-    error?: string;
+type LoginProps = {
+    router: NextRouter
 }
 
-interface LoginProps {
-    router: NextRouter;
-}
 
-class Login extends React.Component<LoginProps, LoginForm> {
-    state = { username: "", password: "" };
-    private error = "";
+class Login extends Component<LoginProps, LoginState> {
+
+    constructor(props: LoginProps) {
+        super(props);
+
+        this.state = { username: "", password: "", error: "" };
+    }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         this.setState((prev) => ({ ...prev, [name]: value }));
-    };
+    }
 
     handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         try {
             const response = await fetch("/api/login", {
                 method: "POST",
-                headers: {"Content-Type": "application/json",},
-                body: JSON.stringify(this.state),
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({username: this.state.username, password: this.state.password}),
             });
 
-            const data: LoginResponse = await response.json();
+            const data: LoginPostResponse = await response.json();
 
             if (data.success) {
                 await this.props.router.push("/");
             } else {
-                this.error = data.error;
-                this.forceUpdate();
+                this.setState(prev =>  ({...prev, error: data.error}));
             }
         } catch (error) {
             console.error(error);
-            this.error = "An error occurred while logging in";
-            this.forceUpdate();
+            this.setState(prev =>  ({...prev, error: "An error occurred while logging in"}));
         }
-    };
+    }
 
     render() {
         return (
@@ -74,7 +75,7 @@ class Login extends React.Component<LoginProps, LoginForm> {
                     </label>
                     <br />
                     <button type="submit">Login</button>
-                    {this.error && <p>{this.error}</p>}
+                    {this.state.error && <p>{this.state.error}</p>}
                 </form>
             </div>
         );

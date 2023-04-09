@@ -1,0 +1,14 @@
+.table {
+    margin-top: 15px;
+    width: 100%;
+    border-spacing: 0;
+}
+
+.table th {
+    text-align: left;
+    background-color: #fff;
+}
+
+.table th, .table td {
+    padding: 4px;
+}

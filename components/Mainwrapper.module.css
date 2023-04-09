@@ -1,0 +1,44 @@
+.navtoggle {
+    display: none;
+}
+
+.navbar {
+    display: block;
+    width: 200px;
+    float: left;
+    margin: 0 20px;
+}
+
+.navbar > div {
+    background-color: #e6e6e6;
+}
+
+.navbar a {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    padding: 8px 15px;
+}
+
+.navbar a:hover {
+    background-color: #f7f7f7;
+}
+
+.main {
+    margin: 10px auto;
+    overflow: hidden;
+    min-width: 400px;
+}
+
+@media only screen and (max-width: 700px) {
+    .navtoggle {
+        display: block;
+    }
+
+    .navbar {
+        display: none;
+        width: 100%;
+        margin: 15px 0;
+        box-sizing: border-box;
+    }
+}

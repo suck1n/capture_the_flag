@@ -1,0 +1,36 @@
+.form > input {
+    padding: 8px;
+    border: 1px solid #b3b3b3;
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.form > input[type=submit] {
+    border: none;
+    background-color: rgb(48, 112, 179);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: Cantarell, sans-serif;
+}
+
+.scoreboard {
+    overflow: auto;
+}
+
+.scoreboard > table {
+    border-spacing: 0;
+}
+
+.scoreboard th {
+    min-width: 30px;
+    text-align: left;
+    background-color: #fff;
+}
+
+.scoreboard th, .scoreboard td {
+    padding: 4px;
+}

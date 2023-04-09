@@ -1,0 +1,11 @@
+html {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+body {
+    font-family: helvetica, sans-serif;
+    color: rgb(51, 51, 51);
+    margin: 15px;
+    box-sizing: border-box;
+}
