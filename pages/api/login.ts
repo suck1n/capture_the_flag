@@ -22,7 +22,8 @@ type LoginRequest = {
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === "GET") {
-		res.status(200).json({ loggedIn: !!req.session["user"], name: req.session["user"].name } as LoginGetResponse);
+		const loggedIn = !!req.session["user"];
+		res.status(200).json({ loggedIn: loggedIn, name: loggedIn && req.session["user"].name } as LoginGetResponse);
 		return;
 	}
 

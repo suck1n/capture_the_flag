@@ -20,22 +20,24 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardResponse> {
     componentDidMount() {
         fetch("/api/scoreboard").then(d => d.json())
             .then((data: ScoreboardResponse) => {
-                data.userTasks.users = data.userTasks.users
-                    .sort((u1, u2) => {
-                        const u1TasksSolved = u1.tasks.filter(t => t.solved).length;
-                        const u2TasksSolved = u2.tasks.filter(t => t.solved).length;
+                if (!data.error) {
+                    data.userTasks.users = data.userTasks.users
+                        .sort((u1, u2) => {
+                            const u1TasksSolved = u1.tasks.filter(t => t.solved).length;
+                            const u2TasksSolved = u2.tasks.filter(t => t.solved).length;
 
-                        if (u1TasksSolved > u2TasksSolved) {
-                            return -1;
-                        } else if (u1TasksSolved < u2TasksSolved) {
-                            return 1;
-                        }
+                            if (u1TasksSolved > u2TasksSolved) {
+                                return -1;
+                            } else if (u1TasksSolved < u2TasksSolved) {
+                                return 1;
+                            }
 
-                        const u1Positions = u1.tasks.filter(t => t.solved).map(t => t.position).reduce((s, n) => s + n);
-                        const u2Positions = u2.tasks.filter(t => t.solved).map(t => t.position).reduce((s, n) => s + n);
+                            const u1Positions = u1.tasks.filter(t => t.solved).map(t => t.position).reduce((s, n) => s + n);
+                            const u2Positions = u2.tasks.filter(t => t.solved).map(t => t.position).reduce((s, n) => s + n);
 
-                        return u1Positions - u2Positions;
-                    })
+                            return u1Positions - u2Positions;
+                        })
+                }
 
                 this.setState(data);
             })
@@ -53,12 +55,12 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardResponse> {
     }
 
     render() {
-        if (!this.state.userTasks) {
-            return <p>Loading...</p>;
-        }
-
         if (this.state.error) {
             return <p>An error occurred: <br/> {this.state.error}</p>
+        }
+
+        if (!this.state.userTasks) {
+            return <p>Loading...</p>;
         }
 
         return (
