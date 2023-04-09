@@ -1,6 +1,7 @@
 import {Database} from 'sqlite3';
 import SHA256 from "crypto-js/sha256";
 import HEX from "crypto-js/enc-hex";
+import * as crypto from "crypto";
 
 const db = new Database('test.db');
 
@@ -29,6 +30,19 @@ export async function userExists(user: string): Promise<boolean> {
             if (err) { reject(err); return; }
             resolve(row !== undefined);
         });
+    });
+}
+
+export async function createUser(user: string, password: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        const salt = crypto.randomBytes(128).toString('hex');
+        const hashedPassword = SHA256(password + salt).toString(HEX).toUpperCase();
+
+        db.prepare("INSERT INTO users (name, password, salt) VALUES (?, ?, ?)")
+            .run([user, hashedPassword, salt], (err: Error | null) => {
+                if (err) { reject(err); return; }
+                resolve();
+            });
     });
 }
 

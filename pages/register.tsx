@@ -1,31 +1,27 @@
 import React, {Component} from "react";
 import {NextRouter, withRouter} from "next/router";
-import {LoginPostResponse} from "./api/login";
 import styles from "../components/Login.module.css";
 import Link from "next/link";
+import {RegisterResponse} from "./api/register";
 
-type LoginState = {
+type RegisterState = {
     username: string
     password: string
     error: string
+    created: boolean
 }
 
-type LoginProps = {
-    router: NextRouter,
-    query: any
+type RegisterProps = {
+    router: NextRouter
 }
 
 
-class Login extends Component<LoginProps, LoginState> {
+class Register extends Component<RegisterProps, RegisterState> {
 
-    constructor(props: LoginProps) {
+    constructor(props: RegisterProps) {
         super(props);
 
-        this.state = { username: this.props.router.query.username as string || "", password: "", error: "" };
-    }
-
-    static getInitialProps({query}) {
-        return {query}
+        this.state = { username: "", password: "", error: "", created: false };
     }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,16 +33,16 @@ class Login extends Component<LoginProps, LoginState> {
         event.preventDefault();
 
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch("/api/register", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({username: this.state.username, password: this.state.password}),
             });
 
-            const data: LoginPostResponse = await response.json();
+            const data: RegisterResponse = await response.json();
 
             if (data.success) {
-                await this.props.router.push("/");
+                this.setState({created: true});
             } else {
                 this.setState(prev =>  ({...prev, error: data.error}));
             }
@@ -59,7 +55,7 @@ class Login extends Component<LoginProps, LoginState> {
     render() {
         return (
             <div className={styles.container}>
-                <h1 className={styles.center}>Login</h1>
+                <h1 className={styles.center}>Register</h1>
                 <form onSubmit={this.handleSubmit} className={styles.form}>
                     <div>
                         <label>Username:</label>
@@ -69,13 +65,14 @@ class Login extends Component<LoginProps, LoginState> {
                         <label>Password:</label>
                         <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
                     </div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Register</button>
                 </form>
-                <p className={styles.p}>Not yet registered? Create account <Link href={"/register"}>here</Link></p>
+                <p className={styles.p}>Already have an Account? Login <Link href={"/login"}>here</Link></p>
                 {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
+                {this.state.created && <p style={{textAlign: "center"}}>User created! You can now <Link href={"/login?username=" + this.state.username}>Login</Link></p>}
             </div>
         );
     }
 }
 
-export default withRouter(Login);
+export default withRouter(Register);
