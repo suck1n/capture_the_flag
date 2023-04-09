@@ -17,7 +17,7 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardResponse> {
         this.state = { userTasks: undefined };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         fetch("/api/scoreboard").then(d => d.json())
             .then((data: ScoreboardResponse) => {
                 data.userTasks.users = data.userTasks.users
@@ -42,6 +42,16 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardResponse> {
             .catch(err => this.setState({ error: err }));
     }
 
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        fetch("/api/flag", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({flag: event.currentTarget.getElementsByTagName("input")[0].value}),
+        }).then(d => console.log("TODO: ", d));
+    }
+
     render() {
         if (!this.state.userTasks) {
             return <p>Loading...</p>;
@@ -53,7 +63,7 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardResponse> {
 
         return (
             <MainWrapper>
-                <form method={"post"} action={"todo"} className={styles.form}>
+                <form onSubmit={this.handleSubmit} className={styles.form}>
                     <input type={"text"} placeholder={"flag{...}"} name={"flag"}/>
                     <input type={"submit"} value={"Submit Flag"} className={"todo"}/>
                 </form>

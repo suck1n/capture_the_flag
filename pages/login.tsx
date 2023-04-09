@@ -56,22 +56,12 @@ class Login extends Component<LoginProps, LoginState> {
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Username:
-                        <input
-                            type="text"
-                            name="username"
-                            value={this.state.username}
-                            onChange={this.handleInputChange}
-                        />
+                        <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
                     </label>
                     <br />
                     <label>
                         Password:
-                        <input
-                            type="password"
-                            name="password"
-                            value={this.state.password}
-                            onChange={this.handleInputChange}
-                        />
+                        <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
                     </label>
                     <br />
                     <button type="submit">Login</button>
