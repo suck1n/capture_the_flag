@@ -3,7 +3,7 @@ import SHA256 from "crypto-js/sha256";
 import HEX from "crypto-js/enc-hex";
 import * as crypto from "crypto";
 
-const db = new Database('test.db');
+const db = new Database('capture_the_flag.db');
 
 export type Flag = {
     id: number,
