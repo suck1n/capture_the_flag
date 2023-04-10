@@ -20,8 +20,7 @@ async function logoutRoute(req: NextApiRequest, res: NextApiResponse) {
     }
 
 
-    delete req.session["user"]
-    await req.session.save();
+    await req.session.destroy();
 
     res.status(200).send({ success: true } as LogoutResponse);
 }
