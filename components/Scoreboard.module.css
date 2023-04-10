@@ -21,16 +21,6 @@
     overflow: auto;
 }
 
-.scoreboard > table {
-    border-spacing: 0;
-}
-
 .scoreboard th {
     min-width: 30px;
-    text-align: left;
-    background-color: #fff;
-}
-
-.scoreboard th, .scoreboard td {
-    padding: 4px;
 }

@@ -9,3 +9,21 @@ body {
     margin: 15px;
     box-sizing: border-box;
 }
+
+table {
+    border-spacing: 0;
+}
+
+th {
+    text-align: left;
+    background-color: #fff;
+}
+
+th, td {
+    padding: 4px;
+}
+
+tr:hover {
+    background-color: #f7f7f7;
+}
+

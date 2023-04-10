@@ -1,0 +1,21 @@
+pre {
+    line-height: 125%;
+    margin: 0;
+}
+
+.codehilite {
+    background-color: #f8f8f8;
+}
+
+.codehilite .k {
+    color: #008000;
+    font-weight: bold;
+}
+
+.codehilite .o, .codehilite .m1 {
+    color: #666;
+}
+
+.codehilite .s1 {
+    color: #BA2121;
+}
