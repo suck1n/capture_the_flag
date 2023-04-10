@@ -5,6 +5,13 @@ import * as crypto from "crypto";
 
 const db = new Database('test.db');
 
+export type Flag = {
+    id: number,
+    flag: string,
+    claimed: boolean,
+    taskId: number
+}
+
 export type User = {
     id: number,
     name: string,
@@ -21,6 +28,31 @@ export type Task = {
 export type UserTask = {
     tasks: Task[],
     users: User[]
+}
+
+export async function getFlag(flag: string): Promise<Flag> {
+    return new Promise<Flag>((resolve, reject) => {
+        db.prepare("SELECT * from flags where flag = ?")
+            .get([flag], (err: Error | null, row: Flag) => {
+                if (err) { reject(err); return; }
+
+                resolve(row);
+            });
+    });
+}
+
+export async function claimFlag(userId: number, flag: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        db.prepare("INSERT INTO solved (userId, taskId) VALUES (?, (select taskId from flags where flag = ?))")
+            .run([userId, flag], (err: Error | null) => {
+                if (err) { reject(err); return; }
+                db.prepare("UPDATE flags SET claimed = true WHERE flag = ?")
+                    .run([flag], (err: Error | null) => {
+                        if (err) { reject(err); return; }
+                        resolve();
+                    });
+            });
+    });
 }
 
 export async function userExists(user: string): Promise<boolean> {
@@ -62,6 +94,19 @@ export async function loginAsUser(user: string, password: string): Promise<User>
     });
 }
 
+export async function getUsers(): Promise<User[]> {
+    return new Promise<User[]>((resolve, reject) => {
+        db.all("SELECT id, name from users", async (err : Error | null, rows: User[]) => {
+            if (err) { reject(err); return; }
+
+            for (let u of rows) {
+                u.tasks = await getTasksForUser(u.id);
+            }
+
+            resolve(rows);
+        });
+    });
+}
 
 
 export async function getTasksForUser(user: number): Promise<Task[]> {
@@ -78,21 +123,6 @@ export async function getTasks(): Promise<Task[]> {
     return new Promise<Task[]>((resolve, reject) => {
         db.all("SELECT id, name from tasks", (err : Error | null, rows: Task[]) => {
             if (err) { reject(err); return; }
-            resolve(rows);
-        });
-    });
-}
-
-
-export async function getUsers(): Promise<User[]> {
-    return new Promise<User[]>((resolve, reject) => {
-        db.all("SELECT id, name from users", async (err : Error | null, rows: User[]) => {
-            if (err) { reject(err); return; }
-
-            for (let u of rows) {
-                u.tasks = await getTasksForUser(u.id);
-            }
-
             resolve(rows);
         });
     });

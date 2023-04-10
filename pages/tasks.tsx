@@ -21,7 +21,7 @@ class Tasks extends Component<TasksProps, UserResponse> {
     async componentDidMount() {
         fetch("/api/user").then(d => d.json())
             .then((data: UserResponse) => this.setState(data))
-            .catch(err => this.setState({ error: err }));
+            .catch(err => this.setState({ error: err.toString() }));
     }
 
     render() {

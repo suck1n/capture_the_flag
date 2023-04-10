@@ -19,7 +19,7 @@ export default class MainWrapper extends Component<any, MainWrapperState> {
     componentDidMount() {
         fetch("/api/login").then(d => d.json())
             .then((data: LoginGetResponse) => this.setState(prev => ({...prev, response: data})))
-            .catch(err => this.setState(prev => ({ ...prev, error: err})));
+            .catch(err => this.setState(prev => ({ ...prev, error: err.toString()})));
     }
 
     handleMenuClick = () => {

@@ -30,7 +30,7 @@ class Logout extends Component<LogoutProps, LogoutState> {
                     this.setState({ error: d.error})
                 }
             })
-            .catch(err => this.setState({ error: err }))
+            .catch(err => this.setState({ error: err.toString() }))
     }
 
     render() {
