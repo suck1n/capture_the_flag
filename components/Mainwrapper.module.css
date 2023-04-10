@@ -2,6 +2,24 @@
     display: none;
 }
 
+.navtoggle button {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 10px;
+    font-size: 1em;
+    background-color: #e6e6e6;
+}
+
+.navtoggle button:hover {
+    background-color: #f7f7f7;
+}
+
+.navtoggle button:active {
+    background-color: #333333;
+    color: #ffffff;
+}
+
 .navbar {
     display: block;
     width: 200px;
@@ -36,9 +54,12 @@
     }
 
     .navbar {
-        display: none;
         width: 100%;
         margin: 15px 0;
         box-sizing: border-box;
+    }
+
+    .navbar[aria-hidden=true] {
+        display: none;
     }
 }

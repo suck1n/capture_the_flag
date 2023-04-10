@@ -6,14 +6,14 @@ import {LoginGetResponse} from "../pages/api/login";
 type MainWrapperState = {
     response: LoginGetResponse,
     error: string,
-    showMenu: boolean
+    hideMenu: boolean
 }
 
 export default class MainWrapper extends Component<any, MainWrapperState> {
 
     constructor(props) {
         super(props);
-        this.state = {response: undefined, error: "", showMenu: true};
+        this.state = {response: undefined, error: "", hideMenu: true};
     }
 
     componentDidMount() {
@@ -23,7 +23,7 @@ export default class MainWrapper extends Component<any, MainWrapperState> {
     }
 
     handleMenuClick = () => {
-        this.setState(prev => ({...prev, showMenu: !prev.showMenu}))
+        this.setState(prev => ({...prev, hideMenu: !prev.hideMenu}))
     }
 
     render() {
@@ -45,7 +45,7 @@ export default class MainWrapper extends Component<any, MainWrapperState> {
             <div className={styles.navtoggle}>
                 <button onClick={this.handleMenuClick}>Menu</button>
             </div>
-            <nav className={styles.navbar}>
+            <nav className={styles.navbar} aria-hidden={this.state.hideMenu}>
                 <div>
                     <Link href={"/scoreboard"}>Scoreboard</Link>
                     <Link href={"/tasks"}>Tasks</Link>
