@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {withIronSessionApiRoute} from "iron-session/next";
 import {sessionOptions} from "../../lib/config";
-import {claimFlag, getFlag, User} from "../../lib/database";
+import {claimFlag, getFlag, hasTaskCompleted, User} from "../../lib/database";
 
 export default withIronSessionApiRoute(flagRoute, sessionOptions);
 
@@ -39,26 +39,25 @@ async function flagRoute(req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
-    console.log("1");
     const flag = await getFlag(flagString);
-    console.log("2");
-
     if (!flag) {
         res.status(200).send({ success: false, error: "Flag does not exist"} as FlagResponse);
         return;
     }
 
-    console.log("3");
+    const hasCompleted = await hasTaskCompleted(user.id, flag.taskId);
+    if (hasCompleted) {
+        res.status(200).send({ success: false, error: "Task already completed"} as FlagResponse);
+        return;
+    }
+
     if (flag.claimed) {
         res.status(200).send({ success: false, error: "Flag already claimed"} as FlagResponse);
         return;
     }
 
-    console.log(user.id);
 
-    console.log("4");
     await claimFlag(user.id, flag.flag);
-    console.log("5");
 
     res.status(200).send({ success: true } as FlagResponse);
 }

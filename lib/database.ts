@@ -128,6 +128,15 @@ export async function getTasks(): Promise<Task[]> {
     });
 }
 
+export async function hasTaskCompleted(userId: number, taskId: number): Promise<Boolean> {
+    return new Promise<Boolean>((resolve, reject) => {
+        db.prepare("SELECT * from solved where userId = ? and taskId = ?")
+            .get([userId, taskId], (err: Error | null, rows: any) => {
+                if (err) { reject(err); return; }
+                resolve(rows && rows.length == 1);
+            });
+    });
+}
 
 export async function getTasksAndUsers(): Promise<UserTask> {
     return ({tasks: await getTasks(), users: await getUsers()} as UserTask);
