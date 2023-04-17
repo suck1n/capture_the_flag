@@ -21,7 +21,7 @@ export default class Task extends Component<PropsWithChildren<TaskProps>, any> {
             <h2>Task {this.props.id}: {this.props.title}</h2>
             {this.props.children}
             <div>
-                {this.props.url && <><b>URL:</b><a className={styles.a} href={this.props.url}>{this.props.url}</a></>}
+                {this.props.url && <><b>URL: </b><a className={styles.a} href={this.props.url}>{this.props.url}</a></>}
                 <h3>Downloads</h3>
                 <a className={styles.a} href={this.props.download.url}>{this.props.download.name}</a>
             </div>

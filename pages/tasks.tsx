@@ -47,7 +47,7 @@ class Tasks extends Component<TasksProps, UserResponse> {
                         {this.state.tasks.map(t => <tr key={t.id}>
                             <td>{t.id}</td>
                             <td><Link href={"/tasks/" + t.id}>{t.name}</Link></td>
-                            <td>{t.solved ? <FontAwesomeIcon icon={faCheck}/> : <></>}</td>
+                            <td>{t.solved ? <FontAwesomeIcon icon={faCheck} style={{fontSize: "1.3rem", paddingLeft: "2px"}}/> : <></>}</td>
                         </tr>)}
                     </tbody>
                 </table>

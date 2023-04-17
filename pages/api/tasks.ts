@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {withIronSessionApiRoute} from "iron-session/next/dist";
+import {withIronSessionApiRoute} from "iron-session/next";
 import {sessionOptions} from "../../lib/config";
 import {getTasksForUser} from "../../lib/database";
 
