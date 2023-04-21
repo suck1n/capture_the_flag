@@ -49,7 +49,7 @@ export default class SQLInjection extends Component<any, any> {
                         <span className="k">SELECT </span>
                         <span className="o">* </span>
                         <span className="k">FROM </span>
-                        <span className="n">internet_index </span>
+                        <span className="n">intranet_index </span>
                         <span className="k">WHERE </span>
                         <span className="n">is_secret </span>
                         <span className="o">= </span>
@@ -62,7 +62,7 @@ export default class SQLInjection extends Component<any, any> {
                 </pre>
                 </div>
                 <p>Den vollständigen Quelltext des Servers findest du weiter unten.</p>
-                <p><strong>Hinweis:</strong> Eine Übersicht der gängisten SQL-Statements kannst du z.B. <a href="http://www.sqltutorial.org/wp-content/uploads/2016/04/SQL-cheat-sheet.pdf">hier</a> finden.</p>
+                <p><strong>Hinweis:</strong> Eine Übersicht der gängigsten SQL-Statements kannst du z.B. <a href="http://www.sqltutorial.org/wp-content/uploads/2016/04/SQL-cheat-sheet.pdf">hier</a> finden.</p>
             </Task>
         );
     }
