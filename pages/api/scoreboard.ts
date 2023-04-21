@@ -21,7 +21,10 @@ async function scoreboardRoute(req: NextApiRequest, res: NextApiResponse) {
     const usersWithTasks: UserTask = await getTasksAndUsers();
 
     if (usersWithTasks) {
-        res.status(200).json({ userTasks: usersWithTasks } as ScoreboardResponse);
+        res.status(200).json({ userTasks: {
+            users: usersWithTasks.users.map(user => ({...user, tasks: user.tasks.filter(task => task.id != 0)})),
+            tasks: usersWithTasks.tasks.filter(task => task.id != 0)
+        }} as ScoreboardResponse);
     } else {
         res.status(404).json({ error: "No users/tasks exist" } as ScoreboardResponse);
     }
