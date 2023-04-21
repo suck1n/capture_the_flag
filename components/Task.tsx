@@ -6,7 +6,7 @@ import {NextRouter, withRouter} from "next/router";
 type TaskProps = {
     title: string
     id: number
-    file_names: string[] | string
+    file_names?: string[] | string | undefined
     router: NextRouter
 }
 
@@ -32,9 +32,9 @@ class Task extends Component<PropsWithChildren<TaskProps>, any> {
             {this.props.children}
             <div>
                 <b>URL: </b><a className={styles.a} href={this.url}>{this.url}</a>
-                <h3>Downloads</h3>
-                {((typeof this.props.file_names !== "object" ? [this.props.file_names] : this.props.file_names) as string[])
-                    .map(file => <><a key={file} className={styles.a} href={this.getDownloadUrl(file)}>{file}</a><br/></>)}
+                {typeof this.props.file_names !== "undefined" && <h3>Downloads</h3>}
+                {typeof this.props.file_names !== "undefined" && (((typeof this.props.file_names !== "object" ? [this.props.file_names] : this.props.file_names) as string[])
+                    .map(file => <><a key={file} className={styles.a} href={this.getDownloadUrl(file)}>{file}</a><br/></>))}
             </div>
         </MainWrapper>;
     }
