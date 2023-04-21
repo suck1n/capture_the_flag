@@ -4,7 +4,7 @@ import os
 import sqlite3
 import sys
 
-db = sqlite3.connect("capture_the_flag.db")
+db = sqlite3.connect("~/Schreibtisch/Server/capture_the_flag/capture_the_flag.db")
 
 
 def flag_exists(flag):
@@ -28,6 +28,7 @@ def create_flag():
 
 def main():
     if len(sys.argv) != 2:
+        print(f"usage: {sys.argv[0]} <TaskID>")
         return
 
     taskId = int(sys.argv[1])
