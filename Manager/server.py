@@ -1,4 +1,5 @@
 import os
+import signal
 from subprocess import PIPE, Popen, STDOUT
 from threading import Thread
 
@@ -29,6 +30,7 @@ class Server:
         cwd = os.getcwd()
         os.chdir(self.directory)
 
+        # TODO Add environment (?)
         self.process = Popen(self.program, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
         os.set_blocking(self.process.stdout.fileno(), False)
 
@@ -36,40 +38,41 @@ class Server:
 
         self.running = True
 
-        Thread(target=self.listen, args=[onchange]).start()
+        Thread(target=self.wait, args=[onchange]).start()
 
     def stop_program(self):
         if not self.running:
             return
 
-        self.process.terminate()
-        self.process.wait()
-        self.process = None
-        self.running = False
+        os.kill(self.process.pid, signal.SIGKILL)
 
-    def read_to_output(self, ter, output):
-        ter.write(output, self.output)
-
-        while self.running and self.terminal_open:
-            value = self.process.stdout.read()
-            if value:
-                self.output += value.decode().replace("\n", "\n▷ ")
-                ter.write(output, self.output)
-
-    def listen(self, onchange=None):
+    def wait(self, onchange=None):
         if not self.running:
             return
 
         self.process.wait()
-
         self.running = False
 
         if not self.terminal_open:
-            self.output += "▷ " + "\n▷ ".join([b.decode() for b in self.process.stdout.readlines()])
+            lines = [b.decode() for b in self.process.stdout.readlines()]
+            self.output += ("▷ " if len(lines) != 0 else "") + "▷ ".join(lines)
             self.output += "\nexit return code: " + str(self.process.returncode)
 
-            if type(onchange) == "function":
+            if callable(onchange):
                 onchange()
+
+        self.process = None
+
+    def read_to_output(self, ter, output):
+        ter.write(output, self.output)
+
+        new_line = True
+        while self.running and self.terminal_open:
+            value = self.process.stdout.read()
+            if value:
+                self.output += ("▷ " if new_line else "") + value.decode()
+                new_line = b"\n" in value
+                ter.write(output, self.output)
 
     def write(self, message):
         if not self.running:

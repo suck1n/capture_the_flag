@@ -120,7 +120,6 @@ def console_listener(input_window, output_window, servers):
                 for server_id, server in enumerate(servers):
                     if server_id == int(args[0]) - 1:
                         server.stop_program()
-                        print_servers(ter, output_window, servers)
                         break
             elif cmd == "open":
                 if len(args) != 1:
