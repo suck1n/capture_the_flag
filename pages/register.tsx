@@ -3,6 +3,7 @@ import {NextRouter, withRouter} from "next/router";
 import styles from "../components/Login.module.css";
 import Link from "next/link";
 import {RegisterResponse} from "./api/register";
+import Head from "next/head";
 
 type RegisterState = {
     username: string
@@ -54,23 +55,28 @@ class Register extends Component<RegisterProps, RegisterState> {
 
     render() {
         return (
-            <div className={styles.container}>
-                <h1 className={styles.center}>Register</h1>
-                <form onSubmit={this.handleSubmit} className={styles.form}>
-                    <div>
-                        <label>Username:</label>
-                        <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
-                    </div>
-                    <button type="submit">Register</button>
-                </form>
-                <p className={styles.p}>Already have an Account? Login <Link href={"/login"}>here</Link></p>
-                {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
-                {this.state.created && <p style={{textAlign: "center"}}>User created! You can now <Link href={"/login?username=" + this.state.username}>Login</Link></p>}
-            </div>
+            <>
+                <Head>
+                    <title>Register</title>
+                </Head>
+                <div className={styles.container}>
+                    <h1 className={styles.center}>Register</h1>
+                    <form onSubmit={this.handleSubmit} className={styles.form}>
+                        <div>
+                            <label>Username:</label>
+                            <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
+                        </div>
+                        <div>
+                            <label>Password:</label>
+                            <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
+                        </div>
+                        <button type="submit">Register</button>
+                    </form>
+                    <p className={styles.p}>Already have an Account? Login <Link href={"/login"}>here</Link></p>
+                    {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
+                    {this.state.created && <p style={{textAlign: "center"}}>User created! You can now <Link href={"/login?username=" + this.state.username}>Login</Link></p>}
+                </div>
+            </>
         );
     }
 }

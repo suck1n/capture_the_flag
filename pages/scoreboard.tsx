@@ -6,6 +6,7 @@ import {ScoreboardResponse} from "./api/scoreboard";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FlagResponse} from "./api/flag";
+import Head from "next/head";
 
 type ScoreboardState = {
     scoreboard?: ScoreboardResponse,
@@ -83,45 +84,50 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardState> {
         }
 
         return (
-            <MainWrapper>
-                <form onSubmit={this.handleSubmit} className={styles.form}>
-                    <input type={"text"} placeholder={"flag{...}"} name={"flag"}/>
-                    <input type={"submit"} value={"Submit Flag"} className={"todo"}/>
-                    {this.state.flag && <p style={{display: "inline", marginLeft: "20px"}}>{
-                        this.state.flag.success ? "Bravo! :) Flag claimed!" :
-                            this.state.flag.error + "!"
-                    }</p>}
-                </form>
-                <h2>Scoreboard</h2>
-                <div className={styles.scoreboard}>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th style={{paddingRight: "250px"}}>User</th>
-                            {this.state.scoreboard.userTasks.tasks.map(task => <th key={task.id} title={task.name}>#{task.id}</th>)}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.state.scoreboard.userTasks.users.map((user, index) =>
-                            <tr key={user.id}>
-                                <td>{index + 1}</td>
-                                <td>{user.name}</td>
-                                {user.tasks.map((task) => (
-                                        <td key={"task" + user.id + task.id} title={task.solved ? task.position + ". Abgabe" : ""}>
-                                            {task.solved ?
-                                                <FontAwesomeIcon icon={faCheck} style={
-                                                    task.position != 1 ? {fontSize: "1.3em"} : {fontSize: "1.3em", color: "red"}
-                                                }/> : <></>}
-                                        </td>
-                                    ))
-                                }
+            <>
+                <Head>
+                    <title>Scoreboard</title>
+                </Head>
+                <MainWrapper>
+                    <form onSubmit={this.handleSubmit} className={styles.form}>
+                        <input type={"text"} placeholder={"flag{...}"} name={"flag"}/>
+                        <input type={"submit"} value={"Submit Flag"} className={"todo"}/>
+                        {this.state.flag && <p style={{display: "inline", marginLeft: "20px"}}>{
+                            this.state.flag.success ? "Bravo! :) Flag claimed!" :
+                                this.state.flag.error + "!"
+                        }</p>}
+                    </form>
+                    <h2>Scoreboard</h2>
+                    <div className={styles.scoreboard}>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th style={{paddingRight: "250px"}}>User</th>
+                                {this.state.scoreboard.userTasks.tasks.map(task => <th key={task.id} title={task.name}>#{task.id}</th>)}
                             </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
-            </MainWrapper>
+                            </thead>
+                            <tbody>
+                            {this.state.scoreboard.userTasks.users.map((user, index) =>
+                                <tr key={user.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{user.name}</td>
+                                    {user.tasks.map((task) => (
+                                            <td key={"task" + user.id + task.id} title={task.solved ? task.position + ". Abgabe" : ""}>
+                                                {task.solved ?
+                                                    <FontAwesomeIcon icon={faCheck} style={
+                                                        task.position != 1 ? {fontSize: "1.3em"} : {fontSize: "1.3em", color: "red"}
+                                                    }/> : <></>}
+                                            </td>
+                                        ))
+                                    }
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+                </MainWrapper>
+            </>
         );
     }
 }

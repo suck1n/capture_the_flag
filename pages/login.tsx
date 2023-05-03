@@ -3,6 +3,7 @@ import {NextRouter, withRouter} from "next/router";
 import {LoginPostResponse} from "./api/login";
 import styles from "../components/Login.module.css";
 import Link from "next/link";
+import Head from "next/head";
 
 type LoginState = {
     username: string
@@ -58,22 +59,27 @@ class Login extends Component<LoginProps, LoginState> {
 
     render() {
         return (
-            <div className={styles.container}>
-                <h1 className={styles.center}>Login</h1>
-                <form onSubmit={this.handleSubmit} className={styles.form}>
-                    <div>
-                        <label>Username:</label>
-                        <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-                <p className={styles.p}>Not yet registered? Create account <Link href={"/register"}>here</Link></p>
-                {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
-            </div>
+            <>
+                <Head>
+                    <title>Login</title>
+                </Head>
+                <div className={styles.container}>
+                    <h1 className={styles.center}>Login</h1>
+                    <form onSubmit={this.handleSubmit} className={styles.form}>
+                        <div>
+                            <label>Username:</label>
+                            <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}/>
+                        </div>
+                        <div>
+                            <label>Password:</label>
+                            <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                    <p className={styles.p}>Not yet registered? Create account <Link href={"/register"}>here</Link></p>
+                    {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
+                </div>
+            </>
         );
     }
 }
