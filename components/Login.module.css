@@ -30,6 +30,9 @@
     display: flex;
     width: 400px;
     justify-content: space-between;
+}
+
+.form > div:not(:last-child) {
     margin-bottom: 15px;
 }
 
