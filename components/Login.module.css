@@ -33,6 +33,11 @@
     margin-bottom: 15px;
 }
 
+.form > .buttons {
+    width: 258px;
+    align-self: end;
+}
+
 .form input {
     width: 240px;
 }
@@ -41,7 +46,6 @@
     padding: 8px;
     border: 1px solid #b3b3b3;
     font-size: 16px;
-    margin-right: 4px;
 }
 
 .form button {
@@ -66,5 +70,9 @@
 
     .form > div {
         width: auto;
+    }
+
+    .form > div {
+        align-self: unset;
     }
 }
