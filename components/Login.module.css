@@ -37,14 +37,14 @@
     width: 240px;
 }
 
-.form input, .form > button {
+.form input, .form button {
     padding: 8px;
     border: 1px solid #b3b3b3;
     font-size: 16px;
     margin-right: 4px;
 }
 
-.form > button {
+.form button {
     font-size: 18px;
     border: none;
     background-color: rgb(48, 112, 179);
@@ -60,7 +60,7 @@
 }
 
 @media only screen and (max-width: 700px) {
-    .form > div {
+    .form > div:not(.buttons) {
         flex-direction: column;
         width: auto;
     }

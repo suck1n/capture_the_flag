@@ -74,7 +74,10 @@ class Login extends Component<LoginProps, LoginState> {
                             <label>Password:</label>
                             <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
                         </div>
-                        <button type="submit">Login</button>
+                        <div className={styles.buttons}>
+                            <button onClick={() => console.log("TODO")}>Guest</button>
+                            <button type="submit">Login</button>
+                        </div>
                     </form>
                     <p className={styles.p}>Not yet registered? Create account <Link href={"/register"}>here</Link></p>
                     {this.state.error && <p style={{textAlign: "center"}}>{this.state.error}</p>}
