@@ -1,5 +1,5 @@
 import {sessionOptions} from "../../lib/config";
-import {loginAsUser} from "../../lib/database";
+import {loginAsUser, User} from "../../lib/database";
 import {withIronSessionApiRoute} from "iron-session/next";
 import {NextApiRequest, NextApiResponse} from "next";
 
@@ -7,7 +7,8 @@ export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
 export type LoginGetResponse = {
 	loggedIn: boolean,
-	name: string
+	name: string,
+	isGuest: boolean
 }
 
 export type LoginPostResponse = {
@@ -16,14 +17,15 @@ export type LoginPostResponse = {
 }
 
 type LoginRequest = {
-	username: string;
-	password: string;
+	isGuest: boolean
+	username: string
+	password: string
 }
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === "GET") {
 		const loggedIn = !!req.session["user"];
-		res.status(200).json({ loggedIn: loggedIn, name: loggedIn && req.session["user"].name } as LoginGetResponse);
+		res.status(200).json({ loggedIn: loggedIn, name: loggedIn && req.session["user"].name, isGuest: loggedIn && req.session["user"].guest } as LoginGetResponse);
 		return;
 	}
 
@@ -37,14 +39,19 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 		return;
 	}
 
-	const { username, password } = req.body as LoginRequest;
+	const { isGuest, username, password } = req.body as LoginRequest;
 
-	if (username === undefined || password === undefined) {
+	if ((username === undefined || password === undefined) && isGuest !== true) {
 		res.status(200).send({ success: false, error: "User and/or Password can not be empty"} as LoginPostResponse);
 		return;
 	}
 
-	const user = await loginAsUser(username, password);
+	const user = isGuest ? {
+		id: -1,
+		name: "Guest",
+		guest: true
+	} as User : await loginAsUser(username, password);
+
 	if (!user) {
 		res.status(200).send({ success: false, error: "User and/or Password was incorrect"} as LoginPostResponse)
 		return;

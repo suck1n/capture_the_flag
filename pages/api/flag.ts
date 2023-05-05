@@ -32,6 +32,11 @@ async function flagRoute(req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
+    if (user.guest) {
+        res.status(401).json({ error: "Guest user not allowed" });
+        return;
+    }
+
     const flagString = (req.body as FlagRequest).flag;
 
     if (!flagString) {

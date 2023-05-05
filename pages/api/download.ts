@@ -20,6 +20,11 @@ async function downloadRoute(req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
+    if (user.guest) {
+        res.status(401).json({ error: "Guest user not allowed" });
+        return;
+    }
+
     if (!process.env["DOWNLOAD_FOLDER"]) {
         res.status(500).json({ error: "Download folder not defined"});
         return;

@@ -57,6 +57,29 @@ class Login extends Component<LoginProps, LoginState> {
         }
     }
 
+    handleGuestLogin = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({isGuest: true}),
+            });
+
+            const data: LoginPostResponse = await response.json();
+
+            if (data.success) {
+                await this.props.router.push("/");
+            } else {
+                this.setState(prev =>  ({...prev, error: data.error}));
+            }
+        } catch (error) {
+            console.error(error);
+            this.setState(prev =>  ({...prev, error: "An error occurred while logging in"}));
+        }
+    }
+
     render() {
         return (
             <>
@@ -75,7 +98,7 @@ class Login extends Component<LoginProps, LoginState> {
                             <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange}/>
                         </div>
                         <div className={styles.buttons}>
-                            <button onClick={() => console.log("TODO")}>Guest</button>
+                            <button type="submit" onClick={this.handleGuestLogin}>Guest</button>
                             <button type="submit">Login</button>
                         </div>
                     </form>

@@ -19,6 +19,11 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse) {
 		return;
 	}
 
+	if (user.guest) {
+		res.status(401).json({ error: "Guest user not allowed" });
+		return;
+	}
+
 	const userTasks: Task[] = await getTasksForUser(user.id);
 
 	if (userTasks) {

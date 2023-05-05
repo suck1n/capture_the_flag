@@ -48,7 +48,7 @@ export default class MainWrapper extends Component<any, MainWrapperState> {
             <nav className={styles.navbar} aria-hidden={this.state.hideMenu}>
                 <div>
                     <Link href={"/scoreboard"}>Scoreboard</Link>
-                    <Link href={"/tasks"}>Tasks</Link>
+                    {!this.state.response.isGuest && <Link href={"/tasks"}>Tasks</Link>}
                     <Link href={"/logout"}>Logout</Link>
                 </div>
             </nav>

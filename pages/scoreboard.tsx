@@ -7,9 +7,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FlagResponse} from "./api/flag";
 import Head from "next/head";
+import {LoginGetResponse} from "./api/login";
 
 type ScoreboardState = {
     scoreboard?: ScoreboardResponse,
+    login?: LoginGetResponse,
     flag?: FlagResponse,
     error?: string
 }
@@ -26,7 +28,10 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardState> {
     }
 
     componentDidMount() {
-        this.updateScoreboard();
+        fetch("/api/login").then(d => d.json())
+            .then((data: LoginGetResponse) => this.setState(prev => ({...prev, login: data})))
+            .then(() => this.updateScoreboard())
+            .catch(err => this.setState(prev => ({ ...prev, error: err.toString()})));
     }
 
     updateScoreboard = () => {
@@ -90,8 +95,9 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardState> {
                 </Head>
                 <MainWrapper>
                     <form onSubmit={this.handleSubmit} className={styles.form}>
-                        <input type={"text"} placeholder={"flag{...}"} name={"flag"}/>
-                        <input type={"submit"} value={"Submit Flag"} className={"todo"}/>
+                        {!this.state.login.isGuest &&
+                            <input type={"text"} placeholder={"flag{...}"} name={"flag"}/> &&
+                            <input type={"submit"} value={"Submit Flag"} className={"todo"}/>}
                         {this.state.flag && <p style={{display: "inline", marginLeft: "20px"}}>{
                             this.state.flag.success ? "Bravo! :) Flag claimed!" :
                                 this.state.flag.error + "!"

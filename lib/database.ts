@@ -15,7 +15,8 @@ export type Flag = {
 export type User = {
     id: number,
     name: string,
-    tasks?: Task[]
+    tasks?: Task[],
+    guest?: boolean
 }
 
 export type Task = {
