@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {withIronSessionApiRoute} from "iron-session/next";
 import {sessionOptions} from "../../lib/config";
-import {getTasksForUser, Task, User} from "../../lib/database";
+import {getTasks, getTasksForUser, Task, User} from "../../lib/database";
 
 export default withIronSessionApiRoute(userRoute, sessionOptions);
 
@@ -19,12 +19,7 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse) {
 		return;
 	}
 
-	if (user.guest) {
-		res.status(401).json({ error: "Guest user not allowed" });
-		return;
-	}
-
-	const userTasks: Task[] = await getTasksForUser(user.id);
+	const userTasks: Task[] = user.guest ? await getTasks() : await getTasksForUser(user.id);
 
 	if (userTasks) {
 		res.status(200).json({

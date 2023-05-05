@@ -45,14 +45,14 @@ class Tasks extends Component<TasksProps, UserResponse> {
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Solved</th>
+                                {!this.state.user.guest && <th>Solved</th>}
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.tasks.map(t => <tr key={t.id}>
                                 <td>{t.id}</td>
                                 <td><Link href={"/tasks/" + t.id}>{t.name}</Link></td>
-                                <td>{t.solved ? <FontAwesomeIcon icon={faCheck} style={{fontSize: "1.3rem", paddingLeft: "2px"}}/> : <></>}</td>
+                                {!this.state.user.guest && <td>{t.solved ? <FontAwesomeIcon icon={faCheck} style={{fontSize: "1.3rem", paddingLeft: "2px"}}/> : <></>}</td>}
                             </tr>)}
                         </tbody>
                     </table>
