@@ -38,6 +38,7 @@
 
 .form > .buttons {
     width: 258px;
+    flex-direction: row-reverse;
     align-self: end;
 }
 
