@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {NextRouter, withRouter} from "next/router";
-import {LoginPostResponse} from "./api/login";
+import {LoginGetResponse, LoginPostResponse} from "./api/login";
 import styles from "../components/Login.module.css";
 import Link from "next/link";
 import Head from "next/head";
@@ -27,6 +27,16 @@ class Login extends Component<LoginProps, LoginState> {
 
     static getInitialProps({query}) {
         return {query}
+    }
+
+    componentDidMount() {
+        fetch("/api/login").then(d => d.json())
+            .then((data: LoginGetResponse) => {
+                if (data.loggedIn) {
+                    void this.props.router.push("/scoreboard");
+                }
+            })
+            .catch(err => this.setState({ error: err.toString() }));
     }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
