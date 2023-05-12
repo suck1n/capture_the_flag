@@ -49,7 +49,7 @@ export default class MainWrapper extends Component<any, MainWrapperState> {
                 <div>
                     <Link href={"/scoreboard"}>Scoreboard</Link>
                     <Link href={"/tasks"}>Tasks</Link>
-                    <Link href={"/logout"}>Logout</Link>
+                    <Link href={"/logout"} className={this.state.response.name === "laurin" ? styles.logout : ""} >Logout</Link>
                 </div>
             </nav>
             <main className={styles.main}>{this.props.children}</main>

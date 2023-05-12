@@ -38,6 +38,14 @@
     padding: 8px 15px;
 }
 
+
+.logout {
+    position: absolute;
+    bottom: 80px;
+    width: 170px;
+    background-color: #e6e6e6;
+}
+
 .navbar a:hover {
     background-color: #f7f7f7;
 }
@@ -47,6 +55,7 @@
     overflow: hidden;
     min-width: 400px;
 }
+
 
 @media only screen and (max-width: 700px) {
     .navtoggle {
