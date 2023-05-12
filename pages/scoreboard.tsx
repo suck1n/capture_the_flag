@@ -96,8 +96,8 @@ class Scoreboard extends Component<ScoreboardProps, ScoreboardState> {
                 <MainWrapper>
                     <form onSubmit={this.handleSubmit} className={styles.form}>
                         {!this.state.login.isGuest &&
-                            <input type={"text"} placeholder={"flag{...}"} name={"flag"}/> &&
-                            <input type={"submit"} value={"Submit Flag"} className={"todo"}/>}
+                            <input type={"text"} placeholder={"flag{...}"} name={"flag"}/>}
+                        {!this.state.login.isGuest && <input type={"submit"} value={"Submit Flag"} className={"todo"}/>}
                         {this.state.flag && <p style={{display: "inline", marginLeft: "20px"}}>{
                             this.state.flag.success ? "Bravo! :) Flag claimed!" :
                                 this.state.flag.error + "!"

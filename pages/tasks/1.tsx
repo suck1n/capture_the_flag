@@ -63,6 +63,8 @@ export default class SQLInjection extends Component<any, any> {
                 </div>
                 <p>Den vollständigen Quelltext des Servers findest du weiter unten.</p>
                 <p><strong>Hinweis:</strong> Eine Übersicht der gängigsten SQL-Statements kannst du z.B. <a href="http://www.sqltutorial.org/wp-content/uploads/2016/04/SQL-cheat-sheet.pdf">hier</a> finden.</p>
+		<p><strong>Hinweis:</strong> SQL-Statements können mit einem Strichpunkt ';' beendet werden</p>
+		<p><strong>Hinweis:</strong> SQL-Statements können mit zwei Minuse '--' auskommentiert werden</p>
             </Task>
         );
     }

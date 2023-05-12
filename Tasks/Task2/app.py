@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from flask import Flask, request, redirect, session
 from flask_session import Session
 import datetime
@@ -97,7 +99,8 @@ def index():
         if res:
             # Check if it was the admin account
             if res[1] == username == ADMIN_USER and res[2] == password == admin_pass:
-                flag = subprocess.check_output(["/bin/flag", "2"]).decode().strip()
+                flag = subprocess.check_output(["/bin/flag", "2"]).decode()
+                print(flag)
                 return PAGE_HEAD + "<b>Hi {}, here is your flag: {}</b>".format(username, flag) + PAGE_FOOTER
             else:
                 return PAGE_HEAD + "<b>Hmm my database says you're admin, but of course I20 doesn't fall for your cheap tricks!!</b>" + PAGE_FOOTER
