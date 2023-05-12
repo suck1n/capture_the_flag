@@ -4,6 +4,7 @@ import styles from "../components/Login.module.css";
 import Link from "next/link";
 import {RegisterResponse} from "./api/register";
 import Head from "next/head";
+import {LoginGetResponse} from "./api/login";
 
 type RegisterState = {
     username: string
@@ -23,6 +24,16 @@ class Register extends Component<RegisterProps, RegisterState> {
         super(props);
 
         this.state = { username: "", password: "", error: "", created: false };
+    }
+
+    componentDidMount() {
+        fetch("/api/login").then(d => d.json())
+            .then((data: LoginGetResponse) => {
+                if (data.loggedIn) {
+                    void this.props.router.push("/scoreboard");
+                }
+            })
+            .catch(err => this.setState({ error: err.toString() }));
     }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
