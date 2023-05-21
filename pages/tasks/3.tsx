@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Task from "../../components/Task";
 
-export default class BlindSQLInjection extends Component<any, any> {
+export default class CookieReplay extends Component<any, any> {
 
     constructor(props) {
         super(props);

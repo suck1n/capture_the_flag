@@ -6,20 +6,23 @@ import {NextRouter, withRouter} from "next/router";
 type TaskProps = {
     title: string
     id: number
+    path?: string
     file_names?: string[] | string | undefined
     router: NextRouter
 }
 
 class Task extends Component<PropsWithChildren<TaskProps>, any> {
 
+    private readonly host : string;
     private readonly baseUrl: string;
     private readonly url: string;
 
     constructor(props: PropsWithChildren<TaskProps>) {
         super(props);
 
-        this.baseUrl = typeof window !== "undefined" && (window.location.protocol + "//" + window.location.host) || "";
-        this.url = this.baseUrl + ":" + (5000 + this.props.id);
+        this.host = typeof window !== "undefined" && window.location.host.replace(/:\d+/, "") || "";
+        this.baseUrl = typeof window !== "undefined" && (window.location.protocol + "//" + this.host) || "";
+        this.url = this.props.path ? this.host + this.props.path : this.baseUrl + ":" + (5000 + this.props.id);
     }
 
     getDownloadUrl(file: string) {
