@@ -35,7 +35,8 @@ class Task extends Component<PropsWithChildren<TaskProps>, any> {
             {this.props.children}
             <div>
                 {this.props.path ? <><b>IP: </b><span className={styles.a}>{this.url}</span></> : <><b>URL: </b><a className={styles.a} href={this.url}>{this.url}</a></>}
-                {typeof this.props.file_names !== "undefined" && <h3>Downloads</h3>}
+                <h3>Downloads</h3>
+                <a className={styles.a} href={this.getDownloadUrl("Exploit.jar")}>Exploit.jar</a><br/>
                 {typeof this.props.file_names !== "undefined" && (((typeof this.props.file_names !== "object" ? [this.props.file_names] : this.props.file_names) as string[])
                     .map(file => <><a key={file} className={styles.a} href={this.getDownloadUrl(file)}>{file}</a><br/></>))}
             </div>
