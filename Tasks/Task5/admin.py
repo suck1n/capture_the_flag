@@ -19,13 +19,17 @@ with open("admin-password.txt", "rb") as f:
 
 
 def open_profile(user):
-    browser = webdriver.Chrome()
+    browser = webdriver.Firefox()
 
     browser.get(f"{URL}/login")
+
+    time.sleep(2)
 
     browser.find_element(By.NAME, "username").send_keys("admin")
     browser.find_element(By.NAME, "password").send_keys(admin_password)
     browser.find_element(By.TAG_NAME, "button").click()
+
+    time.sleep(2)
 
     browser.get(f"{URL}/profile/{user}")
 
