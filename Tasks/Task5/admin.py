@@ -2,10 +2,11 @@ import asyncio
 import os
 import time
 
+import dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-URL = "http://127.0.0.1:5005"
+URL = f"http://{os.environ['SERVER_HOST']}:{int(os.environ['SERVER_PORT'])}"
 
 if not os.path.exists("admin-password.txt"):
     with open("admin-password.txt", "wb") as f:
@@ -44,9 +45,11 @@ async def handle_request(reader, writer):
 
 
 def main():
+    dotenv.load_dotenv(".env.local")
+
     # Starts the Server
     loop = asyncio.get_event_loop()
-    coro = asyncio.start_server(handle_request, "127.0.0.1", 6005)
+    coro = asyncio.start_server(handle_request, os.environ['ADMIN_CONTACT_HOST'], int(os.environ['ADMIN_CONTACT_PORT']))
     server = loop.run_until_complete(coro)
 
     print("Serving on {}".format(server.sockets[0].getsockname()))
