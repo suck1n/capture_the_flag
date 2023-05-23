@@ -26,16 +26,14 @@ UserData = collections.namedtuple("UserData", ("username", "picture", "grade", "
 # Setup Server, by creating secret key, admin password and database
 if not os.path.exists("app-secret.key"):
     with open("app-secret.key", "wb") as f:
-        f.write(os.urandom(32))
-        # f.write(os.getrandom(32))
+        f.write(os.getrandom(32))
 
 with open("app-secret.key", "rb") as f:
     app.secret_key = f.read()
 
 if not os.path.exists("admin-password.txt"):
     with open("admin-password.txt", "wb") as f:
-        f.write(os.urandom(16).hex().encode())
-        # f.write(os.getrandom(16).hex().encode())
+        f.write(os.getrandom(16).hex().encode())
 
 with open("admin-password.txt", "rb") as f:
     admin_password = bcrypt.hashpw(f.read().strip(), bcrypt.gensalt()).decode()

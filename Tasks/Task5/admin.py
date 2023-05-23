@@ -10,15 +10,14 @@ CHROME_PATH = "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe %
 
 if not os.path.exists("admin-password.txt"):
     with open("admin-password.txt", "wb") as f:
-        f.write(os.urandom(16).hex().encode())
-        # f.write(os.getrandom(16).hex().encode())
+        f.write(os.getrandom(16).hex().encode())
 
 with open("admin-password.txt", "rb") as f:
     admin_password = f.read().strip()
 
 
 def open_profile(user):
-    session = req.Session();
+    session = req.Session()
 
     session.post(f"{URL}/login", data={"username": "admin", "password": admin_password})
 
