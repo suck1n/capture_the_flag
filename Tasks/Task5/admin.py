@@ -21,6 +21,7 @@ with open("admin-password.txt", "rb") as f:
 def open_profile(user):
     options = webdriver.ChromeOptions()
     options.add_argument('ignore-certificate-errors')
+    options.add_argument('--headless=new')
     browser = webdriver.Chrome(options=options)
 
     browser.get(f"{URL}/login")
