@@ -6,7 +6,6 @@ import requests as req
 from bs4 import BeautifulSoup
 
 URL = "http://127.0.0.1:5005"
-CHROME_PATH = "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe %s"
 
 if not os.path.exists("admin-password.txt"):
     with open("admin-password.txt", "wb") as f:
