@@ -2,8 +2,8 @@ import asyncio
 import os
 import time
 
-import requests as req
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 URL = "http://127.0.0.1:5005"
 
@@ -12,21 +12,21 @@ if not os.path.exists("admin-password.txt"):
         f.write(os.getrandom(16).hex().encode())
 
 with open("admin-password.txt", "rb") as f:
-    admin_password = f.read().strip()
+    admin_password = f.read().strip().decode()
 
 
 def open_profile(user):
-    session = req.Session()
+    browser = webdriver.Chrome()
 
-    session.post(f"{URL}/login", data={"username": "admin", "password": admin_password})
+    browser.get(f"{URL}/login")
 
-    response = session.get(f"{URL}/profile/{user}")
+    browser.find_element(By.NAME, "username").send_keys("admin")
+    browser.find_element(By.NAME, "password").send_keys(admin_password)
+    browser.find_element(By.TAG_NAME, "button").click()
 
-    soup = BeautifulSoup(response.text, 'html.parser')
-    image_url = soup.div.div.div.img["src"]
+    browser.get(f"{URL}/profile/{user}")
 
-    if image_url.startswith("https") or image_url.startswith("http"):
-        session.get(image_url)
+    time.sleep(2)
 
 
 async def handle_request(reader, writer):

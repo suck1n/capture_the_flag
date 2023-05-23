@@ -47,7 +47,7 @@ async def handle_request(reader, writer):
 def main():
     # Starts the Server
     loop = asyncio.get_event_loop()
-    coro = asyncio.start_server(handle_request, "192.168.1.69", 6006)
+    coro = asyncio.start_server(handle_request, "127.0.0.1", 6006)
     server = loop.run_until_complete(coro)
 
     print("Serving on {}".format(server.sockets[0].getsockname()))
