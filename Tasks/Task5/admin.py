@@ -6,6 +6,8 @@ import dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+dotenv.load_dotenv(".env.local")
+
 URL = f"http://{os.environ['SERVER_HOST']}:{int(os.environ['SERVER_PORT'])}"
 
 if not os.path.exists("admin-password.txt"):
@@ -45,8 +47,6 @@ async def handle_request(reader, writer):
 
 
 def main():
-    dotenv.load_dotenv(".env.local")
-
     # Starts the Server
     loop = asyncio.get_event_loop()
     coro = asyncio.start_server(handle_request, os.environ['ADMIN_CONTACT_HOST'], int(os.environ['ADMIN_CONTACT_PORT']))
