@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 
 dotenv.load_dotenv(".env.local")
 
-URL = f"http://{os.environ['SERVER_HOST']}:{int(os.environ['SERVER_PORT'])}"
+URL = f"{os.environ['PROTOCOL']}://{os.environ['SERVER_HOST']}:{int(os.environ['SERVER_PORT'])}"
 
 if not os.path.exists("admin-password.txt"):
     with open("admin-password.txt", "wb") as f:
@@ -19,17 +19,15 @@ with open("admin-password.txt", "rb") as f:
 
 
 def open_profile(user):
-    browser = webdriver.Firefox()
+    options = webdriver.ChromeOptions()
+    options.add_argument('ignore-certificate-errors')
+    browser = webdriver.Chrome(options=options)
 
     browser.get(f"{URL}/login")
-
-    time.sleep(2)
 
     browser.find_element(By.NAME, "username").send_keys("admin")
     browser.find_element(By.NAME, "password").send_keys(admin_password)
     browser.find_element(By.TAG_NAME, "button").click()
-
-    time.sleep(2)
 
     browser.get(f"{URL}/profile/{user}")
 
