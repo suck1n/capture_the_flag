@@ -6,6 +6,7 @@ import {NextRouter, withRouter} from "next/router";
 type TaskProps = {
     title: string
     id: number
+    httpOnly?: boolean
     path?: string
     file_names?: string[] | string | undefined
     router: NextRouter
@@ -14,14 +15,17 @@ type TaskProps = {
 class Task extends Component<PropsWithChildren<TaskProps>, any> {
 
     private readonly host : string;
+    private readonly protocol : string;
     private readonly baseUrl: string;
     private readonly url: string;
 
     constructor(props: PropsWithChildren<TaskProps>) {
         super(props);
-
+	
+	
         this.host = typeof window !== "undefined" && window.location.host.replace(/:\d+/, "") || "";
-        this.baseUrl = typeof window !== "undefined" && (window.location.protocol + "//" + this.host) || "";
+	this.protocol = typeof window !== "undefined" && !this.props.httpOnly && window.location.protocol || "http:";
+        this.baseUrl = typeof window !== "undefined" && (this.protocol + "//" + this.host) || "";
         this.url = this.props.path ? this.host + this.props.path : this.baseUrl + ":" + (5000 + this.props.id);
     }
 
