@@ -37,10 +37,10 @@ async function downloadRoute(req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
-    if (file.includes("/") || file.includes("\\") || file.includes("..")) {
-        res.status(404).json({ error: "Only file names are allowed"});
-        return;
-    }
+    // if (file.includes("/") || file.includes("\\") || file.includes("..")) {
+    //    res.status(404).json({ error: "Only file names are allowed"});
+    //    return;
+    // }
 
     const filePath = path.join(process.env["DOWNLOAD_FOLDER"], file as string);
 
