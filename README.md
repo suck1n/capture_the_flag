@@ -23,7 +23,7 @@ You need to install all dependencies by executing the command `npm install` insi
 
 ## Session Password
 For the encryption of the session cookies, you need to edit the `.env.local` file in the root directory.
-Replace the placeholder `[password]` with a strong password.
+Replace the placeholder `[password]` with a strong password (at least 32 characters long).
 
 ## Create the Database
 Inside the project root directory you need to create a database file named `capture_the_flag.db`. 
