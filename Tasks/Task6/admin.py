@@ -43,7 +43,7 @@ async def handle_request(reader, writer):
     url = (await reader.readline()).strip().decode()
     print(f"{connection_id}: Received Contact Form: {url}")
 
-    if url.startswith("https") or url.startswith("http"):
+    if url.startswith("http"):
         open_url(url.split(" ")[0])
 
     print(f"{connection_id}: Connection done.")

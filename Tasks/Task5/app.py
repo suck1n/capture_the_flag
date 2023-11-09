@@ -226,7 +226,7 @@ def set_grade():
         return "Permission denied", 403
     
     # get user id and new grade from url
-    # url must be https://[HOST]:[PORT]/set-grade?user=[USER_ID]&grade=[NEW_GRADE]
+    # url must be http://[HOST]:[PORT]/set-grade?user=[USER_ID]&grade=[NEW_GRADE]
     user_id = request.args.get("user")
     new_grade = request.args.get("grade")
     
@@ -277,4 +277,4 @@ def edit():
 
 if __name__ == "__main__":
     dotenv.load_dotenv(".env.local")
-    app.run("127.0.0.1", 5005)
+    app.run("0.0.0.0", 5005)

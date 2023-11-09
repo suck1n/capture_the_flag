@@ -161,4 +161,4 @@ def contact():
 
 if __name__ == "__main__":
     dotenv.load_dotenv(".env.local")
-    app.run("127.0.0.1", 5006)
+    app.run("0.0.0.0", 5006)
