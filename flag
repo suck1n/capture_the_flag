@@ -4,8 +4,10 @@ import os
 import sqlite3
 import sys
 
-db = sqlite3.connect("~/Schreibtisch/Server/capture_the_flag/capture_the_flag.db")
-
+####################################################################################
+# EDIT HERE
+db = sqlite3.connect("PATH_TO_CAPTURE_THE_FLAG_FILE_HERE")
+####################################################################################
 
 def flag_exists(flag):
     cur = db.cursor()
