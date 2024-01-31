@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from flask import Flask, request
 import subprocess
 import sqlite3
@@ -10,7 +8,7 @@ page_head = """
 <!doctype html>
 <html>
 <head>
-<title>Fallmoogle!</title>
+<title>Falloogle!</title>
 <style>
 body {
     text-align: center;
@@ -29,7 +27,8 @@ h1 {
 </head>
 
 <body>
-    <h1>Fallmoogle!</h1>
+<div style="text-align: right"><a href="#">TUM+</a></div>
+    <h1>Falloogle!</h1>
     <h2>The <i>excellent</i> search engine!</h2>
     <form action="/" method="get">
         <input type="text" name="q">
@@ -43,18 +42,21 @@ page_footer = """
 </html>
 """
 
-def load_intranet(db):
-    db.execute("CREATE TABLE intranet_index (id INT PRIMARY KEY, title TEXT, url TEXT, is_secret INT)")
-    flag = subprocess.check_output(["/bin/flag", "1"]).decode()
-    db.execute("""INSERT INTO intranet_index VALUES
-    (NULL, "Very Cool Site", "http://www.fallmerayer.it", 0),
-    (NULL, "Digital Register", "http://www.digitalesregister.it", 0),
-    (NULL, "Some", "http://www.website.it", 0),
-    (NULL, "Stack Overflow", "http://www.stackoverflow.com", 0),
-    (NULL, "Best site out there", "http://10.10.30.38", 0),
-    (NULL, "Wikipedia", "http://www.wikipedia.de", 0),
-    (NULL, "{}", "", 1)
-    """.format(flag))
+def load_internet(db):
+    db.execute("CREATE TABLE internet_index (id INT PRIMARY KEY, title TEXT, url TEXT)")
+    db.execute("""INSERT INTO internet_index VALUES
+    (NULL, "IT Security", "https://10.10.30.49"),
+    (NULL, "Technische Universität München (TUM)", "http://www.tum.de"),
+    (NULL, "Heise", "http://www.heise.de"),
+    (NULL, "Stack Overflow", "http://www.stackoverflow.com"),
+    (NULL, "TUM Moodle", "http://moodle.tum.de"),
+    (NULL, "TUM Online", "http://campus.tum.de"),
+    (NULL, "Wikipedia", "http://www.wikipedia.de")
+    """)
+
+    db.execute("CREATE TABLE falloogleplus_users (id INT PRIMARY KEY, username TEXT, password TEXT)")
+    flag = subprocess.check_output(["/bin/flag", "7"]).decode()
+    db.execute("""INSERT INTO falloogleplus_users VALUES (1, "admin", "{}")""".format(flag))
 
 @app.route("/")
 def index():
@@ -64,9 +66,9 @@ def index():
     if q:
         if len(q) >= 3:
             db = sqlite3.connect(":memory:", isolation_level=None)
-            load_intranet(db)
+            load_internet(db)
             cur = db.cursor()
-            cur.execute("SELECT * FROM intranet_index WHERE is_secret=0 AND title LIKE '%{}%'".format(q))
+            cur.execute('SELECT * FROM internet_index WHERE title LIKE "%{}%"'.format(q))
             page += "<h2>Results</h2>"
             for record in cur.fetchall():
                 page = page + """<a href="{}">{}</a><br>""".format(record[2], record[1])
@@ -75,4 +77,4 @@ def index():
     return page_head + page + page_footer
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5001)
+    app.run("127.0.0.1", 5007)

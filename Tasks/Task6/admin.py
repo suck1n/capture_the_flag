@@ -6,6 +6,9 @@ import dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
 dotenv.load_dotenv(".env.local")
 
 URL = f"{os.environ['PROTOCOL']}://{os.environ['SERVER_HOST']}:{int(os.environ['SERVER_PORT'])}"
@@ -22,18 +25,30 @@ def open_url(url):
     options = webdriver.ChromeOptions()
     options.add_argument('ignore-certificate-errors')
     options.add_argument('--headless=new')
-    browser = webdriver.Chrome(options=options)
 
-    browser.get(f"{URL}/login")
+    with webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install())) as browser:
+        print("logging in...")
 
-    browser.find_element(By.NAME, "username").send_keys("admin")
-    browser.find_element(By.NAME, "password").send_keys(admin_password)
-    browser.find_elements(By.TAG_NAME, "input")[2].click()
+        browser.get(f"{URL}/login")
 
-    browser.get(url)
+        browser.find_element(By.NAME, "username").send_keys("admin")
+        browser.find_element(By.NAME, "password").send_keys(admin_password)
+        browser.find_elements(By.TAG_NAME, "input")[2].click()
 
-    time.sleep(2)
+        browser.implicitly_wait(3)
 
+        flag = browser.find_element(By.ID, "balance").text
+        print("found flag!" if flag else "no flag available")
+
+        print("logged in!")
+
+        print("clicking link...")
+        browser.get(url)
+
+        print(f"now on {browser.current_url}")
+        print("waiting for something to happen...")
+        time.sleep(3)
+        print("done waiting! exiting")
 
 async def handle_request(reader, writer):
     connection_id = f"{time.strftime('%FT%T%z')}-{os.urandom(4).hex()}"

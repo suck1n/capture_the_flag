@@ -116,13 +116,15 @@ def profile(target_id):
     # if not logged in, redirect to login page
     if "user_id" not in session:
         return redirect("/login")
-    
+
     # get the user id of the target
     try:
         target_id = str(uuid.UUID(target_id)) # canonicalize
     except ValueError:
         return "Bad profile link", 400
-        
+
+    print(f"getting profile {target_id} for {session['user_id']}")
+
     # check if user is allowed to see the profile of target_id
     if session["user_id"] != target_id:
         if session["role"] != ROLE_ADMIN:
@@ -156,6 +158,7 @@ def login():
         if not username or not password:
             flash("No username or password specified")
         if login_result := check_login(username.strip(), password):
+            print(f"logged in: {username}")
             user_id, role = login_result
             session.permanent = True
             session["user_id"] = user_id
@@ -221,6 +224,8 @@ def set_grade():
     if "user_id" not in session:
         return redirect("/login")
     
+    print(f"user {session['user_id']} tries to set grade")
+    
     # if the user is not a admin, send permission denied
     if session.get("role") != ROLE_ADMIN:
         return "Permission denied", 403
@@ -229,11 +234,13 @@ def set_grade():
     # url must be http://[HOST]:[PORT]/set-grade?user=[USER_ID]&grade=[NEW_GRADE]
     user_id = request.args.get("user")
     new_grade = request.args.get("grade")
+
+    print(f"trying to set grade {new_grade} for {user_id}")
     
     if not user_id or not new_grade:
         return "No user or grade specified", 400
     # if grade has not the format of a grade between 4.0 and 10.0
-    elif not re.match(r"^(?:[456789]\.\d\d?)|(?:10\.00?)$", new_grade):
+    elif not re.match(r"^(?:[456789]\.\d\d?)|(?:10\.0?)$", new_grade):
         return "Invalid grade", 400
         
     
@@ -277,4 +284,4 @@ def edit():
 
 if __name__ == "__main__":
     dotenv.load_dotenv(".env.local")
-    app.run("0.0.0.0", 5005)
+    app.run("127.0.0.1", 5005)

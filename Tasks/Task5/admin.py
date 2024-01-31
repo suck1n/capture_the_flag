@@ -6,6 +6,9 @@ import dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+from selenium.webdriver.chrome.service import Service as ChromeService 
+from webdriver_manager.chrome import ChromeDriverManager
+
 dotenv.load_dotenv(".env.local")
 
 URL = f"{os.environ['PROTOCOL']}://{os.environ['SERVER_HOST']}:{int(os.environ['SERVER_PORT'])}"
@@ -19,20 +22,37 @@ with open("admin-password.txt", "rb") as f:
 
 
 def open_profile(user):
+    print("starting browser...")
     options = webdriver.ChromeOptions()
     options.add_argument('ignore-certificate-errors')
     options.add_argument('--headless=new')
-    browser = webdriver.Chrome(options=options)
 
-    browser.get(f"{URL}/login")
+    with webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options
+) as browser:
+        print("started!")
 
-    browser.find_element(By.NAME, "username").send_keys("admin")
-    browser.find_element(By.NAME, "password").send_keys(admin_password)
-    browser.find_element(By.TAG_NAME, "button").click()
+        browser.get(f"{URL}/login")
 
-    browser.get(f"{URL}/profile/{user}")
+        print("logging in...")
 
-    time.sleep(2)
+        browser.find_element(By.NAME, "username").send_keys("admin")
+        browser.find_element(By.NAME, "password").send_keys(admin_password)
+        browser.find_element(By.TAG_NAME, "button").click()
+
+        time.sleep(1)
+
+        print("logged in!")
+
+        print(f"getting profile {user}")
+
+        browser.get(f"{URL}/profile/{user}")
+
+        print(f"Current url: {browser.current_url}")
+
+        url = browser.find_element(By.TAG_NAME, "img").get_attribute("src")
+        print(f"waiting for image to load request... {url}")
+
+        # time.sleep(3)
 
 
 async def handle_request(reader, writer):

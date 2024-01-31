@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+
+import os
+import sqlite3
+import sys
+
+####################################################################################
+# EDIT HERE
+db = sqlite3.connect("/home/mattia/capture_the_flag/capture_the_flag.db")
+####################################################################################
+
+def flag_exists(flag):
+    cur = db.cursor()
+    res = cur.execute("SELECT * from flags where flag = ?", (flag, ))
+    return res.fetchone() is not None
+
+
+def insert_flag(flag, taskId):
+    cur = db.cursor()
+    cur.execute("INSERT INTO flags (flag, taskId, claimed) VALUES (?, ?, 0)", (flag, taskId))
+    db.commit()
+
+
+def create_flag():
+    while True:
+        flag = "flag{" + os.urandom(16).hex() + "}"
+        if not flag_exists(flag):
+            return flag
+
+
+def main():
+    if len(sys.argv) != 1:
+        print(f"usage: {sys.argv[0]}")
+        return
+
+    taskId = int(8)
+    flag = create_flag()
+
+    insert_flag(flag, taskId)
+    db.close()
+
+    print(flag)
+
+
+if __name__ == "__main__":
+    main()
